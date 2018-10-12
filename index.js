@@ -8,6 +8,7 @@ server.use(express.json());
 const projects = require('./data/helpers/projectModel');
 const actions = require('./data/helpers/actionModel');
 
+
 // ** Project Routes **
 
 //get all projects
@@ -23,7 +24,21 @@ server.get('/api/projects', (req, res) => {
 });
 
 //get projects by id
-
+server.get('/api/projects/:id', (req, res) => {
+    const id = req.params.id;
+    projects
+    .get(id)
+    .then(project => {
+        if(!project) {
+            res.status(404).json({message: 'No Project with this ID exists'})
+        } else {
+            res.status(200).send(project);
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: 'project can not be populated at this time'});
+    });
+});
 
 
 // ** Action Routes **
@@ -37,6 +52,23 @@ server.get('/api/actions', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({message: 'No Actions Found'});
+    });
+});
+
+//get actions by id
+server.get('/api/actions/:id', (req, res) => {
+    const id = req.params.id;
+    actions
+    .get(id)
+    .then(action => {
+        if(!action) {
+            res.status(404).json({message: 'No Action with this ID exists'})
+        } else {
+            res.status(200).send(action);
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: 'action can not be populated at this time'});
     });
 });
 

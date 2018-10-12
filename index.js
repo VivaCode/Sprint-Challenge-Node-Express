@@ -124,7 +124,21 @@ server.get('/api/actions/:id', (req, res) => {
 });
 
 //get actions by project id
-
+server.get('/api/projects/:id/actions/', (req, res) => {
+    const id = req.params.id;
+    projects
+    .getProjectActions(id)
+    .then(actions => {
+        if(!actions) {
+            res.status(404).json({message:'no actions found for this project'});
+        } else {
+            res.status(200).send(actions);
+        }
+    })
+    .catch(err => {
+        res.status(500).json({message:'actions cannot be populated at this time.'});
+    });
+});
 
 //create new action
 server.post('/api/actions', (req, res) => {

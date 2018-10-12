@@ -40,6 +40,28 @@ server.get('/api/projects/:id', (req, res) => {
     });
 });
 
+//create new project
+server.post('/api/projects/', (req, res) => {
+    const projectModel = req.body;
+    projects
+    .insert(projectModel)
+    .then(response => {
+        res.status(201).json(response);
+    })
+    .catch(err => {
+        if (err.errno === 19) {
+            res.status(404).json({message: 'please provide all required fields'});
+        } else {
+            res.status(500).json({message: 'Not able to create new project at this time'});
+        }
+    });
+});
+
+//update project
+
+
+//delete project
+
 
 // ** Action Routes **
 
@@ -71,6 +93,31 @@ server.get('/api/actions/:id', (req, res) => {
         res.status(500).json({error: 'action can not be populated at this time'});
     });
 });
+
+//create new action
+server.post('/api/actions', (req, res) => {
+    const newAction = {
+        "project_id": req.body.project_id,
+        "description": req.body.description,
+        "notes": req.body.notes
+    }
+
+    if (!newAction.description || !newAction.notes || !newAction.project_id) {
+        return res.status(400).json({msg: 'please provide all required fields'});
+    }
+    actions
+    .insert(newAction)
+    .then(response => {
+        res.status(201).json(response);
+    })
+    .catch(err => {
+        res.status(500).json({message: 'Not able to create new action at this time'});
+    });
+});
+
+//update action
+
+//delete action
 
 
 

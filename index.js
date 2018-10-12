@@ -78,6 +78,18 @@ server.put('/api/projects/:id', (req, res) => {
    });
 
 //delete project
+server.delete('/api/projects/:id', (req, res) => {
+    const id = req.params.id;
+    projects
+        .remove(id)
+        .then(response => {
+            res.status(200).json({message: 'project deleted' })
+        })
+        
+        .catch(err => {
+            res.status(500).json({message: 'unable to remove project from server'});
+        });
+});
 
 
 // ** Action Routes **
@@ -110,6 +122,9 @@ server.get('/api/actions/:id', (req, res) => {
             res.status(500).json({error: 'action can not be populated at this time'});
         });
 });
+
+//get actions by project id
+
 
 //create new action
 server.post('/api/actions', (req, res) => {
@@ -154,6 +169,25 @@ server.put('/api/actions/:id', (req, res) => {
 
 
 //delete action
+server.delete('/api/actions/:id', (req, res) => {
+    const id = req.params.id;
+
+    actions
+        .get(id)
+        .then(action => {
+            actions
+            .remove(id)
+            .then(action => {
+                res.status(200).json({message: 'action has been deleted'})
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            });
+        })
+        .catch(err => {
+            res.status(404).json({message: 'action not found'});
+        });
+});
 
 
 

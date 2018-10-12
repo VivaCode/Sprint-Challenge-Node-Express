@@ -63,14 +63,8 @@ server.put('/api/projects/:id', (req, res) => {
     const update = req.body;
     projects
         .update(id, update)
-        .then(count => {
-            if (count > 0) {
-            projects.get(id).then(projects => {
-                res.status(200).json(projects);
-            })
-            } else {
-                res.status(400).json({message: 'Project not found: cannot update.'});   
-            }
+        .then(projects => {
+            res.status(200).json(projects);
         })
         .catch(err => {
             res.status(500).json({message: 'Server cannot update project at this time.'});
@@ -167,14 +161,8 @@ server.put('/api/actions/:id', (req, res) => {
     const update = req.body;
     actions
         .update(id, update)
-        .then(count => {
-            if (count > 0) {
-                actions.get(id).then(action => {
-                    res.status(200).json(action)
-                })
-            } else {
-                res.status(400).json({message: 'Action not found: cannot update.'});   
-            }
+        .then(action => {
+                res.status(200).json(action)
         })
         .catch(err => {
             res.status(500).json({message: 'Server cannot update project at this time.'});
